@@ -2,13 +2,11 @@ package com.mystaria.game.core;
 
 import com.mystaria.game.MystariaServer;
 import com.mystaria.game.api.file.JsonFile;
+import com.mystaria.game.core.instance.MystariaInstanceHandler;
+import com.mystaria.game.core.log.Logging;
 import com.mystaria.game.core.player.MystariaPlayerConnector;
 import com.mystaria.game.core.properties.ConnectorProperties;
 import com.mystaria.game.core.properties.ServerProperties;
-import net.minestom.server.MinecraftServer;
-import net.minestom.server.instance.InstanceContainer;
-import net.minestom.server.instance.InstanceManager;
-import net.minestom.server.instance.block.Block;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,13 +19,14 @@ import java.util.Objects;
 public class MystariaCore {
 
     private final File workingDir;
+    private final Logging LOG = new Logging(getClass());
+    private boolean loaded;
 
     private ServerProperties serverProperties;
     private ConnectorProperties connectorProperties;
 
     private MystariaPlayerConnector playerConnector;
-    private InstanceContainer instanceContainer;
-    private InstanceManager instanceManager;
+    private MystariaInstanceHandler instanceHandler;
 
     public MystariaCore(File workingDirectory) {
         this.workingDir = workingDirectory;
@@ -45,11 +44,20 @@ public class MystariaCore {
     }
 
     public void loadCore() {
+        if (loaded) {
+            return;
+        }
+
         long current = System.currentTimeMillis();
-        System.out.println("Loading the MystariaCore..");
+        LOG.info("Loading the MystariaCore..");
+        this.instanceHandler = new MystariaInstanceHandler(workingDir);
+        this.instanceHandler.loadAllInstances();
+        if(serverProperties.generateDefaultInstance)
+            instanceHandler.generateDefault();
+
         this.playerConnector = new MystariaPlayerConnector(connectorProperties);
-        System.out.println("MystariaCore done in " + (System.currentTimeMillis() - current) + "ms.");
-        initializeInstance();
+        LOG.info("MystariaCore done in " + (System.currentTimeMillis() - current) + "ms.");
+        this.loaded = true;
     }
 
     private void copyDefaults(JsonFile server, JsonFile connector) {
@@ -71,17 +79,7 @@ public class MystariaCore {
         return connectorProperties;
     }
 
-    public InstanceContainer getInstanceContainer() {
-        return instanceContainer;
-    }
-
-    public InstanceManager getInstanceManager() {
-        return instanceManager;
-    }
-
-    public void initializeInstance() {
-        instanceManager = MinecraftServer.getInstanceManager();
-        instanceContainer = instanceManager.createInstanceContainer();
-        instanceContainer.setGenerator(unit -> unit.modifier().fillHeight(0, 40, Block.STONE));
+    public MystariaInstanceHandler getInstanceHandler() {
+        return instanceHandler;
     }
 }

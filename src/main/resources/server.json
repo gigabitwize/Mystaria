@@ -1,4 +1,5 @@
 {
   "bind_ip": "localhost",
-  "bind_port": 25565
+  "bind_port": 25565,
+  "generate_default_instance": true
 }

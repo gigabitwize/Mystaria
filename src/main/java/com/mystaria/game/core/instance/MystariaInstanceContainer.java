@@ -1,11 +1,14 @@
 package com.mystaria.game.core.instance;
 
+import com.mystaria.game.core.instance.generators.FlatTerrainGenerator;
+import com.mystaria.game.core.player.MystariaPlayer;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Point;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.Player;
 import net.minestom.server.instance.IChunkLoader;
 import net.minestom.server.instance.InstanceContainer;
+import net.minestom.server.instance.block.Block;
 import net.minestom.server.instance.block.BlockHandler;
 import net.minestom.server.world.DimensionType;
 import org.jetbrains.annotations.NotNull;
@@ -20,24 +23,54 @@ import java.util.UUID;
  */
 public class MystariaInstanceContainer extends InstanceContainer {
 
+    private final MystariaInstanceHandler instanceHandler;
     private Location spawnPosition;
 
     /**
      * @param spawnPosition The spawn coordinates.
      * @param dimensionType The dimension type of this instance.
      */
-    public MystariaInstanceContainer(Pos spawnPosition, DimensionType dimensionType) {
+    public MystariaInstanceContainer(MystariaInstanceHandler instanceHandler, Pos spawnPosition, DimensionType dimensionType) {
         super(UUID.randomUUID(), dimensionType, null);
+        this.instanceHandler = instanceHandler;
         this.spawnPosition = new Location(this, spawnPosition);
-        MinecraftServer.getInstanceManager().registerInstance(this);
     }
 
     /**
      * @param chunkLoader The chunk save & load manager, used to save & read instances to/from disk.
      */
-    public MystariaInstanceContainer(Pos spawnPosition, DimensionType dimensionType, IChunkLoader chunkLoader) {
+    public MystariaInstanceContainer(MystariaInstanceHandler instanceHandler, Pos spawnPosition, DimensionType dimensionType, IChunkLoader chunkLoader) {
         super(UUID.randomUUID(), dimensionType, chunkLoader);
+        this.instanceHandler = instanceHandler;
         this.spawnPosition = new Location(this, spawnPosition);
+    }
+
+    /**
+     * Unloads this instance and tries to find a new available instance for its players.
+     * <p>
+     * If no other instance is found, the player will be kicked.
+     */
+    public void unload() {
+        this.instanceHandler.getRandomInstance().ifPresentOrElse(newMystariaInstance -> {
+            for (Player player : getPlayers()) {
+                MystariaPlayer mystariaPlayer = (MystariaPlayer) player;
+                mystariaPlayer.setInstance(newMystariaInstance);
+                mystariaPlayer.setRespawnPoint(newMystariaInstance.getSpawn().getPosition());
+                mystariaPlayer.sendMessage("Your previous instance was unloaded, you have been teleported to a new one");
+            }
+        }, () -> {
+            for (Player player : getPlayers()) {
+                MystariaPlayer mystariaPlayer = (MystariaPlayer) player;
+                mystariaPlayer.kick("Could not find a new instance for you");
+            }
+        });
+    }
+
+    /**
+     * Returns this instance's spawn {@link Location}.
+     */
+    public Location getSpawn() {
+        return spawnPosition;
     }
 
     /**
@@ -48,10 +81,10 @@ public class MystariaInstanceContainer extends InstanceContainer {
     }
 
     /**
-     * Returns this instance's spawn {@link Location}.
+     * Registers this instance.
      */
-    public Location getSpawn() {
-        return spawnPosition;
+    public void register() {
+        MinecraftServer.getInstanceManager().registerInstance(this);
     }
 
     @Override

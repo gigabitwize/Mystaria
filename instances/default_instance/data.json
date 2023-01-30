@@ -1,0 +1,37 @@
+{
+  "spawn": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0,
+    "yaw": 0.0,
+    "pitch": 0.0
+  },
+  "dimension": {
+    "id": 0,
+    "registered": false,
+    "name": {
+      "domain": "minecraft",
+      "path": "overworld",
+      "full": "minecraft:overworld"
+    },
+    "natural": true,
+    "ambientLight": 0.0,
+    "ceilingEnabled": false,
+    "skylightEnabled": true,
+    "raidCapable": true,
+    "respawnAnchorSafe": false,
+    "ultrawarm": false,
+    "bedSafe": true,
+    "effects": "minecraft:overworld",
+    "piglinSafe": false,
+    "minY": -64,
+    "height": 384,
+    "logicalHeight": 384,
+    "coordinateScale": 1,
+    "infiniburn": {
+      "domain": "minecraft",
+      "path": "infiniburn_overworld",
+      "full": "minecraft:infiniburn_overworld"
+    }
+  }
+}

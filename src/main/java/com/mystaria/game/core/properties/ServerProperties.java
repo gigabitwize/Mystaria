@@ -11,4 +11,6 @@ public class ServerProperties {
     public final String bindIp = "localhost";
     @SerializedName("bind_port")
     public final int bindPort = 25565;
+    @SerializedName("generate_default_instance")
+    public boolean generateDefaultInstance = true;
 }

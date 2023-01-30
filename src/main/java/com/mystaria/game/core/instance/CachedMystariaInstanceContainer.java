@@ -16,9 +16,23 @@ public class CachedMystariaInstanceContainer extends MystariaInstanceContainer {
      *
      * @param instancePath The path to the instance's folder.
      */
-    public CachedMystariaInstanceContainer(String instancePath, Pos spawnPosition, DimensionType dimensionType) {
-        super(spawnPosition, dimensionType, new AnvilLoader(instancePath));
+    public CachedMystariaInstanceContainer(MystariaInstanceHandler instanceHandler, String instancePath, Pos spawnPosition, DimensionType dimensionType) {
+        super(instanceHandler, spawnPosition, dimensionType, new AnvilLoader(instancePath));
         this.instancePath = instancePath;
+    }
+
+    @Override
+    public void unload() {
+        super.unload();
+        save();
+    }
+
+    /**
+     * Saves this instance to disk.
+     */
+    public void save() {
+        saveChunksToStorage();
+        saveInstance();
     }
 
     public String getInstancePath() {
