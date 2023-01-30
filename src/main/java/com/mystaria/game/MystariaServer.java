@@ -15,6 +15,7 @@ public class MystariaServer {
     private static MinecraftServer minecraftServer;
     private static MystariaCore core;
 
+
     public static void main(String[] args) {
         minecraftServer = MinecraftServer.init();
         MojangAuth.init();
@@ -24,6 +25,7 @@ public class MystariaServer {
         core.loadCore();
 
         System.out.println("Mystaria is now running on " + core.getServerProperties().bindIp + ":" + core.getServerProperties().bindPort);
+
     }
 
     public static MystariaCore getCore() {
@@ -33,4 +35,6 @@ public class MystariaServer {
     public MinecraftServer getMinecraftServer() {
         return minecraftServer;
     }
+
+
 }
