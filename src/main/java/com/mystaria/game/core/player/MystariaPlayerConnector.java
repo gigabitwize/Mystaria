@@ -6,7 +6,6 @@ import com.mystaria.game.core.properties.ConnectorProperties;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.GameMode;
-import net.minestom.server.event.Event;
 import net.minestom.server.event.EventFilter;
 import net.minestom.server.event.EventListener;
 import net.minestom.server.event.EventNode;

@@ -87,6 +87,10 @@ public class MystariaInstanceContainer extends InstanceContainer {
         MinecraftServer.getInstanceManager().registerInstance(this);
     }
 
+    public MystariaInstanceHandler getInstanceHandler() {
+        return instanceHandler;
+    }
+
     @Override
     public boolean placeBlock(BlockHandler.@NotNull Placement placement) {
         return super.placeBlock(placement);

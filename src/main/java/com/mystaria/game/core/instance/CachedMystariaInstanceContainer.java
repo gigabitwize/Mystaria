@@ -23,16 +23,18 @@ public class CachedMystariaInstanceContainer extends MystariaInstanceContainer {
 
     @Override
     public void unload() {
-        super.unload();
         save();
+        super.unload();
     }
 
     /**
      * Saves this instance to disk.
      */
     public void save() {
+        getInstanceHandler().getLog().info("Saving instance: " + instancePath);
         saveChunksToStorage();
-        saveInstance();
+       // saveInstance();
+        getInstanceHandler().getLog().info(instancePath + " saved.");
     }
 
     public String getInstancePath() {

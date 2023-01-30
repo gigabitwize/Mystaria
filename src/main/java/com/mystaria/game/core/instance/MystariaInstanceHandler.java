@@ -1,5 +1,6 @@
 package com.mystaria.game.core.instance;
 
+import com.google.common.collect.Sets;
 import com.mystaria.game.api.file.JsonFile;
 import com.mystaria.game.core.instance.exception.InstanceMissingException;
 import com.mystaria.game.core.instance.generators.FlatTerrainGenerator;
@@ -19,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Created by Giovanni on 1/30/2023
@@ -126,5 +128,24 @@ public class MystariaInstanceHandler {
             }
         }
         return Optional.empty();
+    }
+
+    /**
+     * Returns all MystariaInstanceContainers that are cacheable.
+     */
+    public Set<CachedMystariaInstanceContainer> getAllCachedInstances() {
+        if(MinecraftServer.getInstanceManager().getInstances().isEmpty()) {
+            return null;
+        }
+        Set<CachedMystariaInstanceContainer> cachedInstances = Sets.newHashSet();
+        for (Instance instance : MinecraftServer.getInstanceManager().getInstances()) {
+            if(instance instanceof CachedMystariaInstanceContainer cachedInstance)
+                cachedInstances.add(cachedInstance);
+        }
+        return cachedInstances;
+    }
+
+    public Logging getLog() {
+        return LOG;
     }
 }
