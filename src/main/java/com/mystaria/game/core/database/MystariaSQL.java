@@ -71,7 +71,7 @@ public class MystariaSQL implements Database {
         } catch (Exception e) {
             return false;
         }
-        SQLScriptExecutor sqlScriptExecutor = new SQLScriptExecutor(dataSource.getConnection(), true, true);
+        SQLScriptExecutor sqlScriptExecutor = new SQLScriptExecutor(dataSource.getConnection(), false, true);
         sqlScriptExecutor.runScript(new BufferedReader(new FileReader(defaultTableData.getPath())));
         return true;
     }
