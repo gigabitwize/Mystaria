@@ -7,10 +7,15 @@ import com.mystaria.game.core.database.MystariaSQL;
 import com.mystaria.game.core.instance.CachedMystariaInstanceContainer;
 import com.mystaria.game.core.log.Logging;
 import com.mystaria.game.core.player.MystariaPlayer;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
+import net.minestom.server.event.EventListener;
 import net.minestom.server.event.player.PlayerChatEvent;
+import net.minestom.server.event.server.ServerListPingEvent;
 import net.minestom.server.extras.MojangAuth;
+import net.minestom.server.ping.ResponseData;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,8 +73,19 @@ public class MystariaServer {
 
         core = new MystariaCore(WORKING_DIR);
         minecraftServer.start(core.getServerProperties().bindIp, core.getServerProperties().bindPort);
-        System.out.println(); // Empty line
 
+        // A temporary MOTD listener to set the MOTD to = starting, it expires when the MystariaCore is done loading.
+        MinecraftServer.getGlobalEventHandler().addListener(EventListener.builder(ServerListPingEvent.class)
+                .expireWhen(serverListPingEvent -> core.isLoaded())
+                .handler(serverListPing -> {
+                    ResponseData tempResponseData = new ResponseData();
+                    tempResponseData.setMaxPlayer(0);
+                    tempResponseData.setDescription(Component.text("The server is starting..").color(NamedTextColor.RED));
+                    serverListPing.setResponseData(tempResponseData);
+                })
+                .build());
+
+        System.out.println(); // Empty line
         core.loadCore();
 
         MinecraftServer.getGlobalEventHandler().addListener(PlayerChatEvent.class, event -> {

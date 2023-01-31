@@ -77,6 +77,10 @@ public class MystariaCore {
         }
     }
 
+    public boolean isLoaded() {
+        return loaded;
+    }
+
     public ServerProperties getServerProperties() {
         return serverProperties;
     }
