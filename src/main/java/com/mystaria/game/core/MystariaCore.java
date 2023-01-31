@@ -4,9 +4,11 @@ import com.mystaria.game.MystariaServer;
 import com.mystaria.game.api.file.JsonFile;
 import com.mystaria.game.core.instance.MystariaInstanceHandler;
 import com.mystaria.game.core.log.Logging;
+import com.mystaria.game.core.motd.MystariaMOTD;
 import com.mystaria.game.core.player.MystariaPlayerConnector;
 import com.mystaria.game.core.properties.ConnectorProperties;
 import com.mystaria.game.core.properties.ServerProperties;
+import net.minestom.server.MinecraftServer;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +19,8 @@ import java.util.Objects;
  * Created by Giovanni on 1/29/2023
  */
 public class MystariaCore {
+
+    public static final String BUILD_VERSION = "v0";
 
     private final File workingDir;
     private final Logging LOG = new Logging(getClass());
@@ -56,6 +60,8 @@ public class MystariaCore {
             instanceHandler.generateDefault();
 
         this.playerConnector = new MystariaPlayerConnector(connectorProperties);
+        MinecraftServer.getGlobalEventHandler().addListener(new MystariaMOTD(connectorProperties));
+
         LOG.info("MystariaCore done in " + (System.currentTimeMillis() - current) + "ms.");
         this.loaded = true;
     }
