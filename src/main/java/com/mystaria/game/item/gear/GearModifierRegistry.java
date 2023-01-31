@@ -4,6 +4,7 @@ import com.mystaria.game.api.event.MystariaEventFilters;
 import com.mystaria.game.core.player.MystariaPlayer;
 import com.mystaria.game.item.Item;
 import com.mystaria.game.item.gear.modifiers.DamageModifier;
+import net.minestom.server.MinecraftServer;
 import net.minestom.server.event.EventNode;
 import net.minestom.server.event.entity.EntityAttackEvent;
 
@@ -33,5 +34,8 @@ public class GearModifierRegistry {
             MystariaPlayer player = (MystariaPlayer) entity;
             return player.isWearingAnyArmor();
         });
+
+        MinecraftServer.getGlobalEventHandler().addChild(weaponModifiersNode);
+        MinecraftServer.getGlobalEventHandler().addChild(armorModifiersNode);
     }
 }

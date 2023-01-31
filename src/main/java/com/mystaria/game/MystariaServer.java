@@ -92,10 +92,6 @@ public class MystariaServer {
             if (event.getMessage().equalsIgnoreCase("dev-test-stop")) stop();
         });
 
-
-        // test listener
-        MinecraftServer.getGlobalEventHandler().addListener(new TestListener());
-
         SERVER_LOG.info("Mystaria is now running on " + core.getServerProperties().bindIp + ":" + core.getServerProperties().bindPort);
     }
 
