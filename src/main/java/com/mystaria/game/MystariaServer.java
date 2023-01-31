@@ -1,7 +1,8 @@
 package com.mystaria.game;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.mystaria.game.core.MystariaCore;
+import com.mystaria.game.core.database.MystariaPlayerData;
 import com.mystaria.game.core.database.MystariaSQL;
 import com.mystaria.game.core.instance.CachedMystariaInstanceContainer;
 import com.mystaria.game.core.log.Logging;
@@ -17,7 +18,6 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 
 /**
@@ -28,10 +28,13 @@ public class MystariaServer {
     public static final Logging SERVER_LOG = new Logging(MystariaServer.class);
     public static final File WORKING_DIR = new File(System.getProperty("user.dir"));
     public static final File DATABASE_DIR = new File(WORKING_DIR, "database");
+    public static boolean stopping = false;
 
     private static MinecraftServer minecraftServer;
     private static MystariaSQL mystariaDatabase;
     private static MystariaCore core;
+
+    private static Collection<MystariaPlayerData> playerDataSnapshot;
 
     public static void main(String[] args) {
         SERVER_LOG.info("Starting..");
@@ -80,26 +83,31 @@ public class MystariaServer {
      * Gracefully stops the server.
      */
     public static void stop() {
+        stopping = true;
         SERVER_LOG.info("Stopping the server..");
-        mystariaDatabase.savePlayerDataBulk(getOnlinePlayers());
-        mystariaDatabase.close();
 
+        createDataSnapshot();
         for (Player onlinePlayer : MinecraftServer.getConnectionManager().getOnlinePlayers()) {
             onlinePlayer.kick("The server is stopping");
             onlinePlayer.remove();
         }
 
+        mystariaDatabase.savePlayerDataBulk(playerDataSnapshot);
+        mystariaDatabase.close();
+
         for (CachedMystariaInstanceContainer cachedInstance : core.getInstanceHandler().getAllCachedInstances()) {
             cachedInstance.save();
             MinecraftServer.getInstanceManager().unregisterInstance(cachedInstance);
         }
+
         MinecraftServer.stopCleanly();
         SERVER_LOG.info("Done, goodbye!");
         System.exit(0);
     }
 
-    public static Collection<MystariaPlayer> getOnlinePlayers() {
-        return MinecraftServer.getConnectionManager().getOnlinePlayers().stream().map(onlinePlayer -> (MystariaPlayer) onlinePlayer).collect(Collectors.toCollection(Lists::newArrayList));
+    private static void createDataSnapshot() {
+        playerDataSnapshot = Sets.newHashSet();
+        MinecraftServer.getConnectionManager().getOnlinePlayers().forEach(player -> playerDataSnapshot.add(((MystariaPlayer) player).getPlayerData()));
     }
 
     public static MystariaCore getCore() {

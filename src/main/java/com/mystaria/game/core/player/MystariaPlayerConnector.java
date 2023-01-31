@@ -10,6 +10,7 @@ import net.minestom.server.event.EventFilter;
 import net.minestom.server.event.EventListener;
 import net.minestom.server.event.EventNode;
 import net.minestom.server.event.player.AsyncPlayerPreLoginEvent;
+import net.minestom.server.event.player.PlayerDisconnectEvent;
 import net.minestom.server.event.player.PlayerLoginEvent;
 import net.minestom.server.event.trait.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
@@ -45,7 +46,25 @@ public class MystariaPlayerConnector implements EventListener<AsyncPlayerPreLogi
                 player.setRespawnPoint(instance.getSpawn().getPosition());
                 player.setPermissionLevel(2);
                 player.setGameMode(GameMode.CREATIVE);
+
+                if(player.getPlayerData().newData)
+                    MystariaServer.getDatabase().insertNewPlayer(player);
                 return Result.SUCCESS;
+            }
+        }).addListener(new EventListener<PlayerDisconnectEvent>() {
+            @Override
+            public @NotNull Result run(@NotNull PlayerDisconnectEvent event) {
+                if(MystariaServer.stopping)
+                    return Result.SUCCESS;
+
+                MystariaPlayer player = (MystariaPlayer) event.getPlayer();
+                MystariaServer.getDatabase().savePlayerData(player);
+                return Result.SUCCESS;
+            }
+
+            @Override
+            public @NotNull Class<PlayerDisconnectEvent> eventType() {
+                return PlayerDisconnectEvent.class;
             }
         }).addListener(this);
         MinecraftServer.getGlobalEventHandler().addChild(connectorNode);

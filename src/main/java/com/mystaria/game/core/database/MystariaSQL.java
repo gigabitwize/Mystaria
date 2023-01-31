@@ -12,6 +12,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Objects;
@@ -45,18 +48,88 @@ public class MystariaSQL implements Database {
     }
 
     @Override
-    public void savePlayerData(MystariaPlayer player) {
+    public void insertNewPlayer(MystariaPlayer player) {
+        CompletableFuture.runAsync(() -> {
+            MystariaPlayerData playerData = player.getPlayerData();
+            if (!playerData.newData) return;
 
+            try {
+                Connection connection = dataSource.getConnection();
+
+                String query = "INSERT INTO players (uuid,username) values (?,?)";
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, playerData.uuid.toString());
+                statement.setString(2, playerData.username);
+                statement.executeUpdate();
+                playerData.newData = false;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
-    public void savePlayerDataBulk(Collection<MystariaPlayer> playerCollection) {
+    public void savePlayerData(MystariaPlayer player) {
+        CompletableFuture.runAsync(() -> {
+            MystariaPlayerData playerData = player.getPlayerData();
+
+            try {
+                Connection connection = dataSource.getConnection();
+
+                String query = "UPDATE players SET uuid=?, username=? WHERE uuid=?";
+
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, playerData.uuid.toString());
+                statement.setString(2, playerData.username);
+                statement.setString(3, playerData.uuid.toString());
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void savePlayerDataBulk(Collection<MystariaPlayerData> dataCollection) {
+        try {
+            Connection connection = dataSource.getConnection();
+            for (MystariaPlayerData playerData : dataCollection) {
+                String query = "UPDATE players SET uuid=?, username=? WHERE uuid=?";
+
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, playerData.uuid.toString());
+                statement.setString(2, playerData.username);
+                statement.setString(3, playerData.uuid.toString());
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
     @Override
     public CompletableFuture<MystariaPlayerData> loadPlayerData(UUID playerId) {
-        return CompletableFuture.completedFuture(new MystariaPlayerData(playerId));
+        return CompletableFuture.supplyAsync(() -> {
+            MystariaPlayerData playerData = new MystariaPlayerData(playerId);
+            try {
+                Connection connection = dataSource.getConnection();
+
+                String query = "SELECT * FROM players WHERE uuid = ?";
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, playerId.toString());
+
+                ResultSet dataSet = statement.executeQuery();
+                while (dataSet.next()) {
+                    playerData.newData = false;
+                    playerData.username = dataSet.getString("username");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return null;
+            }
+            return playerData;
+        });
     }
 
     @Override

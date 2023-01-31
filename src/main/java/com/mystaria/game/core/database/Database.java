@@ -20,8 +20,15 @@ public interface Database {
 
     /**
      * Used for saving player data in bulk.
+     *
+     * Bulk saving does not execute async by default since it's mainly used on server stop.
      */
-    void savePlayerDataBulk(Collection<MystariaPlayer> playerCollection);
+    void savePlayerDataBulk(Collection<MystariaPlayerData> dataCollection);
+
+    /**
+     * Inserts a new player in the database.
+     */
+    void insertNewPlayer(MystariaPlayer player);
 
     /**
      * Loads a player's data from the database.
