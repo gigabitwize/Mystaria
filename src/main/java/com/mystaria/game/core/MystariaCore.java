@@ -17,6 +17,8 @@ import java.util.Objects;
 
 /**
  * Created by Giovanni on 1/29/2023
+ * <p>
+ * The Mystaria core provides base functionality for the server the server to function.
  */
 public class MystariaCore {
 

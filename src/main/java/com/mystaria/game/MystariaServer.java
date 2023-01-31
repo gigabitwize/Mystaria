@@ -7,6 +7,7 @@ import com.mystaria.game.core.database.MystariaSQL;
 import com.mystaria.game.core.instance.CachedMystariaInstanceContainer;
 import com.mystaria.game.core.log.Logging;
 import com.mystaria.game.core.player.MystariaPlayer;
+import com.mystaria.game.dummy.TestDummy;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minestom.server.MinecraftServer;
@@ -38,6 +39,7 @@ public class MystariaServer {
     private static MinecraftServer minecraftServer;
     private static MystariaSQL mystariaDatabase;
     private static MystariaCore core;
+    private static MystariaGame game;
 
     private static Collection<MystariaPlayerData> playerDataSnapshot;
 
@@ -87,9 +89,15 @@ public class MystariaServer {
 
         System.out.println(); // Empty line
         core.loadCore();
+        game = new MystariaGame(core);
 
         MinecraftServer.getGlobalEventHandler().addListener(PlayerChatEvent.class, event -> {
             if (event.getMessage().equalsIgnoreCase("dev-test-stop")) stop();
+            if(event.getMessage().equalsIgnoreCase("test-item-dummy")) {
+                MystariaPlayer player = (MystariaPlayer) event.getPlayer();
+                TestDummy.createAt(player.getLocation());
+                TestDummy.giveTestItem(player);
+            }
         });
 
         SERVER_LOG.info("Mystaria is now running on " + core.getServerProperties().bindIp + ":" + core.getServerProperties().bindPort);

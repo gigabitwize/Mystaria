@@ -29,6 +29,8 @@ public class DamageModifier extends GearModifier implements EventListener<Entity
         float damage = (float) weapon.getModifierValue(this).getValue();
 
         livingEntity.damage(DamageType.fromPlayer(mystariaPlayer), damage);
+        mystariaPlayer.sendMessage("Damage Output: " + damage);
+        mystariaPlayer.sendMessage("Target HP now: " + livingEntity.getHealth());
         return Result.SUCCESS;
     }
 

@@ -1,10 +1,15 @@
 package com.mystaria.game.core.player;
 
 import com.mystaria.game.core.database.MystariaPlayerData;
+import com.mystaria.game.core.instance.CachedMystariaInstanceContainer;
+import com.mystaria.game.core.instance.Location;
+import com.mystaria.game.core.instance.MystariaInstanceContainer;
 import com.mystaria.game.item.Item;
 import net.minestom.server.entity.Player;
+import net.minestom.server.instance.Instance;
 import net.minestom.server.network.player.PlayerConnection;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by Giovanni on 1/29/2023
@@ -47,6 +52,17 @@ public class MystariaPlayer extends Player {
                 || Item.isItemOfType(getInventory().getBoots(), Item.Type.ARMOR);
     }
 
+    /**
+     * Returns this player's current {@link Location}.
+     */
+    public Location getLocation() {
+        return new Location(getInstance(), getPosition());
+    }
+
+    @Override
+    public @Nullable CachedMystariaInstanceContainer getInstance() {
+        return (CachedMystariaInstanceContainer) super.getInstance();
+    }
 
     /**
      * Returns this player's {@link MystariaPlayerData}. This is the data that is

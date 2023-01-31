@@ -27,25 +27,34 @@ public abstract class GearModifier {
      *
      * This is not the actual implementation of a modifier, but merely just what determines the value
      * that a modifier will use.
+     *
+     * Weird? This class is meant for inheritance of JSON serialization only, don't use it for anything else.
      */
-    public interface GearModifierValue<A> {
+    public static class GearModifierValue<A> {
+
+        private Class<? extends GearModifier> modifierClass;
+        private A value;
 
         /**
          * Class of the {@link GearModifier} this value is made for.
          */
-        Class<? extends GearModifier> getModifierClass();
+        public Class<? extends GearModifier> getModifierClass() {
+            return modifierClass;
+        }
 
         /**
          * The value of the modifier.
          */
-        A getValue();
+        public A getValue() {
+            return value;
+        }
 
     }
 
     /**
      * A persistent value like Armor's HP.
      */
-    public static class Value<A> implements GearModifierValue<A> {
+    public static class Value<A> extends GearModifierValue<A> {
 
         private final Class<? extends GearModifier> modifier;
         private final A value;
@@ -69,7 +78,7 @@ public abstract class GearModifier {
     /**
      * Returns a random Double between a min and a max.
      */
-    public static class RangedDoubleValue implements GearModifierValue<Double> {
+    public static class RangedDoubleValue extends GearModifierValue<Double> {
 
         private final Class<? extends GearModifier> modifier;
         private final double min, max;
@@ -94,7 +103,7 @@ public abstract class GearModifier {
     /**
      * Returns a random Integer between a min and a max.
      */
-    public static class RangedIntValue implements GearModifierValue<Integer> {
+    public static class RangedIntValue extends GearModifierValue<Integer> {
 
         private final Class<? extends GearModifier> modifier;
         private final int min, max;
@@ -119,7 +128,7 @@ public abstract class GearModifier {
     /**
      * Returns a random Float between a min and a max.
      */
-    public static class RangedFloatValue implements GearModifierValue<Float> {
+    public static class RangedFloatValue extends GearModifierValue<Float> {
 
         private final Class<? extends GearModifier> modifier;
         private final float min, max;

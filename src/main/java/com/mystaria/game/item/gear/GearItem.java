@@ -65,7 +65,7 @@ public class GearItem implements Item {
         if(itemStack != null) return itemStack;
         itemStack = ItemStack
                 .builder(Material.IRON_AXE)
-                .displayName(Component.text("Sword"))
+                .displayName(Component.text("Battle Axe"))
                 .set(ItemTags.TYPE, type)
                 .set(ItemTags.MODIFIERS, new GearModifierContainer(modifiers))
                 .build();
