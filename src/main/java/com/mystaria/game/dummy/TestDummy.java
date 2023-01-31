@@ -7,9 +7,8 @@ import com.mystaria.game.item.Item;
 import com.mystaria.game.item.gear.GearItem;
 import com.mystaria.game.item.gear.GearModifier;
 import com.mystaria.game.item.gear.modifiers.DamageModifier;
-import net.kyori.adventure.text.Component;
-import net.minestom.server.attribute.Attribute;
-import net.minestom.server.entity.EntityCreature;
+import com.mystaria.game.monster.Monster;
+import com.mystaria.game.tier.Tier;
 import net.minestom.server.entity.EntityType;
 import net.minestom.server.item.ItemStack;
 
@@ -19,12 +18,8 @@ import net.minestom.server.item.ItemStack;
 public class TestDummy {
 
     public static void createAt(Location location) {
-        EntityCreature zombie = new EntityCreature(EntityType.ZOMBIE);
-        zombie.getAttribute(Attribute.MAX_HEALTH).setBaseValue(100);
-        zombie.setHealth(100);
-        zombie.setCustomName(Component.text("Test Dummy (Max 100 HP)"));
-        zombie.setCustomNameVisible(true);
-        zombie.setInstance(location.getInstance(), location.getPosition());
+        Monster monster = new Monster(Tier.T5, "Skeleton Man", EntityType.SKELETON);
+        monster.spawn(location);
     }
 
     public static void giveTestItem(MystariaPlayer player) {

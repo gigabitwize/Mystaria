@@ -24,6 +24,7 @@ public class GearModifierRegistry {
     public GearModifierRegistry() {
         // Listeners in this node will only execute if a player is using a weapon
         this.weaponModifiersNode = EventNode.value("weapon-modifiers", MystariaEventFilters.ENTITY_ATTACK, entity -> {
+            if(!(entity instanceof MystariaPlayer)) return false;
             MystariaPlayer player = (MystariaPlayer) entity;
             return player.isHoldingItem(Item.Type.WEAPON);
         })
@@ -31,6 +32,7 @@ public class GearModifierRegistry {
 
         // Listeners in this node will only execute if a player is wearing armor
         this.armorModifiersNode = EventNode.value("armor-modifiers", MystariaEventFilters.ENTITY_ATTACK, entity -> {
+            if(!(entity instanceof MystariaPlayer)) return false;
             MystariaPlayer player = (MystariaPlayer) entity;
             return player.isWearingAnyArmor();
         });
