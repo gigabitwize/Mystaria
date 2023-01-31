@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Created by Giovanni on 1/30/2023
@@ -25,7 +26,7 @@ public interface Database {
     /**
      * Loads a player's data from the database.
      */
-    void loadPlayerData(UUID playerId);
+    CompletableFuture<MystariaPlayerData> loadPlayerData(UUID playerId);
 
     /**
      * Opens a connection with the database.

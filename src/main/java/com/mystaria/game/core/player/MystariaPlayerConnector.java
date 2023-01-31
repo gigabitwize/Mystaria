@@ -28,34 +28,36 @@ public class MystariaPlayerConnector implements EventListener<AsyncPlayerPreLogi
         this.properties = properties;
         this.connectorNode = EventNode.type("connector", EventFilter.PLAYER);
 
-        MinecraftServer.getConnectionManager().setPlayerProvider(new MystariaPlayerProvider());
-        connectorNode
-                // .addlistener(databaseListener).addChild(node.addListener(logins))
-                .addListener(this)
-                .addListener(new EventListener<PlayerLoginEvent>() {
-                    @Override
-                    public @NotNull Class<PlayerLoginEvent> eventType() {
-                        return PlayerLoginEvent.class;
-                    }
+        MinecraftServer.getConnectionManager().setPlayerProvider(new MystariaPlayerProvider(MystariaServer.getDatabase()));
+        connectorNode.addListener(new EventListener<PlayerLoginEvent>() {
+            @Override
+            public @NotNull Class<PlayerLoginEvent> eventType() {
+                return PlayerLoginEvent.class;
+            }
 
-                    @Override
-                    public @NotNull Result run(@NotNull PlayerLoginEvent event) {
-                        Optional<MystariaInstanceContainer> instanceCheck = MystariaServer.getCore().getInstanceHandler().getRandomInstance();
-                        MystariaInstanceContainer instance = instanceCheck.get(); // Null = impossible
+            @Override
+            public @NotNull Result run(@NotNull PlayerLoginEvent event) {
+                Optional<MystariaInstanceContainer> instanceCheck = MystariaServer.getCore().getInstanceHandler().getRandomInstance();
+                MystariaInstanceContainer instance = instanceCheck.get(); // Null = impossible
 
-                        MystariaPlayer player = (MystariaPlayer) event.getPlayer();
-                        event.setSpawningInstance(instance);
-                        player.setRespawnPoint(instance.getSpawn().getPosition());
-                        player.setPermissionLevel(2);
-                        player.setGameMode(GameMode.CREATIVE);
-                        return Result.SUCCESS;
-                    }
-                });
+                MystariaPlayer player = (MystariaPlayer) event.getPlayer();
+                event.setSpawningInstance(instance);
+                player.setRespawnPoint(instance.getSpawn().getPosition());
+                player.setPermissionLevel(2);
+                player.setGameMode(GameMode.CREATIVE);
+                return Result.SUCCESS;
+            }
+        }).addListener(this);
         MinecraftServer.getGlobalEventHandler().addChild(connectorNode);
     }
 
     @Override
     public @NotNull Result run(@NotNull AsyncPlayerPreLoginEvent event) {
+        if (!(event.getPlayer() instanceof MystariaPlayer)) {
+            event.getPlayer().kick(Component.text("Failed to load your data"));
+            return Result.INVALID;
+        }
+
         if (MinecraftServer.getConnectionManager().getOnlinePlayers().size() >= properties.maxPlayers) {
             event.getPlayer().kick(Component.text("The server is full"));
             return Result.INVALID;

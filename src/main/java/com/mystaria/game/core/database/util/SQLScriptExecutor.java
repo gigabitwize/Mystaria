@@ -1,4 +1,4 @@
-package com.mystaria.game.core.database;
+package com.mystaria.game.core.database.util;
 
 import java.io.IOException;
 import java.io.LineNumberReader;

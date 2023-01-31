@@ -1,6 +1,7 @@
 package com.mystaria.game.core.database;
 
 import com.mystaria.game.MystariaServer;
+import com.mystaria.game.core.database.util.SQLScriptExecutor;
 import com.mystaria.game.core.log.Logging;
 import com.mystaria.game.core.player.MystariaPlayer;
 import com.zaxxer.hikari.HikariConfig;
@@ -15,6 +16,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Created by Giovanni on 1/31/2023
@@ -53,8 +55,8 @@ public class MystariaSQL implements Database {
     }
 
     @Override
-    public void loadPlayerData(UUID playerId) {
-
+    public CompletableFuture<MystariaPlayerData> loadPlayerData(UUID playerId) {
+        return CompletableFuture.completedFuture(new MystariaPlayerData(playerId));
     }
 
     @Override
