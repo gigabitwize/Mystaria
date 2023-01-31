@@ -30,26 +30,27 @@ public class MystariaPlayerConnector implements EventListener<AsyncPlayerPreLogi
 
         MinecraftServer.getConnectionManager().setPlayerProvider(new MystariaPlayerProvider());
         connectorNode
+                // .addlistener(databaseListener).addChild(node.addListener(logins))
                 .addListener(this)
                 .addListener(new EventListener<PlayerLoginEvent>() {
-            @Override
-            public @NotNull Class<PlayerLoginEvent> eventType() {
-                return PlayerLoginEvent.class;
-            }
+                    @Override
+                    public @NotNull Class<PlayerLoginEvent> eventType() {
+                        return PlayerLoginEvent.class;
+                    }
 
-            @Override
-            public @NotNull Result run(@NotNull PlayerLoginEvent event) {
-                Optional<MystariaInstanceContainer> instanceCheck = MystariaServer.getCore().getInstanceHandler().getRandomInstance();
-                MystariaInstanceContainer instance = instanceCheck.get(); // Null = impossible
+                    @Override
+                    public @NotNull Result run(@NotNull PlayerLoginEvent event) {
+                        Optional<MystariaInstanceContainer> instanceCheck = MystariaServer.getCore().getInstanceHandler().getRandomInstance();
+                        MystariaInstanceContainer instance = instanceCheck.get(); // Null = impossible
 
-                MystariaPlayer player = (MystariaPlayer) event.getPlayer();
-                event.setSpawningInstance(instance);
-                player.setRespawnPoint(instance.getSpawn().getPosition());
-                player.setPermissionLevel(2);
-                player.setGameMode(GameMode.CREATIVE);
-                return Result.SUCCESS;
-            }
-        });
+                        MystariaPlayer player = (MystariaPlayer) event.getPlayer();
+                        event.setSpawningInstance(instance);
+                        player.setRespawnPoint(instance.getSpawn().getPosition());
+                        player.setPermissionLevel(2);
+                        player.setGameMode(GameMode.CREATIVE);
+                        return Result.SUCCESS;
+                    }
+                });
         MinecraftServer.getGlobalEventHandler().addChild(connectorNode);
     }
 

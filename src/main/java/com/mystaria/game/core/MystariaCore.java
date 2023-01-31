@@ -52,7 +52,7 @@ public class MystariaCore {
         LOG.info("Loading the MystariaCore..");
         this.instanceHandler = new MystariaInstanceHandler(workingDir);
         this.instanceHandler.loadAllInstances();
-        if(serverProperties.generateDefaultInstance)
+        if (serverProperties.generateDefaultInstance)
             instanceHandler.generateDefault();
 
         this.playerConnector = new MystariaPlayerConnector(connectorProperties);

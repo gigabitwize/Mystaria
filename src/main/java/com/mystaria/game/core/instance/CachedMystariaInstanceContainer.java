@@ -33,7 +33,7 @@ public class CachedMystariaInstanceContainer extends MystariaInstanceContainer {
     public void save() {
         getInstanceHandler().getLog().info("Saving instance: " + instancePath);
         saveChunksToStorage();
-       // saveInstance();
+        // saveInstance();
         getInstanceHandler().getLog().info(instancePath + " saved.");
     }
 

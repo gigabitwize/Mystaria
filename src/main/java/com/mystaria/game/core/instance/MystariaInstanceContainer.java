@@ -1,6 +1,5 @@
 package com.mystaria.game.core.instance;
 
-import com.mystaria.game.core.instance.generators.FlatTerrainGenerator;
 import com.mystaria.game.core.player.MystariaPlayer;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Point;
@@ -8,7 +7,6 @@ import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.Player;
 import net.minestom.server.instance.IChunkLoader;
 import net.minestom.server.instance.InstanceContainer;
-import net.minestom.server.instance.block.Block;
 import net.minestom.server.instance.block.BlockHandler;
 import net.minestom.server.world.DimensionType;
 import org.jetbrains.annotations.NotNull;

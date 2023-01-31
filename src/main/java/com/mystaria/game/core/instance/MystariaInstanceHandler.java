@@ -10,10 +10,7 @@ import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.instance.block.Block;
-import net.minestom.server.instance.generator.GenerationUnit;
-import net.minestom.server.instance.generator.Generator;
 import net.minestom.server.world.DimensionType;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -134,12 +131,12 @@ public class MystariaInstanceHandler {
      * Returns all MystariaInstanceContainers that are cacheable.
      */
     public Set<CachedMystariaInstanceContainer> getAllCachedInstances() {
-        if(MinecraftServer.getInstanceManager().getInstances().isEmpty()) {
+        if (MinecraftServer.getInstanceManager().getInstances().isEmpty()) {
             return null;
         }
         Set<CachedMystariaInstanceContainer> cachedInstances = Sets.newHashSet();
         for (Instance instance : MinecraftServer.getInstanceManager().getInstances()) {
-            if(instance instanceof CachedMystariaInstanceContainer cachedInstance)
+            if (instance instanceof CachedMystariaInstanceContainer cachedInstance)
                 cachedInstances.add(cachedInstance);
         }
         return cachedInstances;
