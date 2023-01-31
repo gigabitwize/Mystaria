@@ -19,19 +19,21 @@ public class DamageModifier extends GearModifier implements EventListener<Entity
     }
 
     @Override
-    public @NotNull Class<EntityAttackEvent> eventType() {
-        return EntityAttackEvent.class;
-    }
-
-    @Override
     public @NotNull Result run(@NotNull EntityAttackEvent event) {
         MystariaPlayer mystariaPlayer = (MystariaPlayer) event.getEntity();
         LivingEntity livingEntity = (LivingEntity) event.getTarget();
 
         GearItem weapon = new GearItem(mystariaPlayer.getItemInMainHand());
+        if(weapon.getModifierValue(this) == null) return Result.INVALID;
+
         float damage = (float) weapon.getModifierValue(this).getValue();
 
         livingEntity.damage(DamageType.fromPlayer(mystariaPlayer), damage);
         return Result.SUCCESS;
+    }
+
+    @Override
+    public @NotNull Class<EntityAttackEvent> eventType() {
+        return EntityAttackEvent.class;
     }
 }

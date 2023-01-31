@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * <p>
  * A gear stat modifier like DPS, HPS or Damage.
  */
-public class GearModifier {
+public abstract class GearModifier {
 
     private final String name;
 

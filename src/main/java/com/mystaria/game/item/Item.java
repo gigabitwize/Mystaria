@@ -1,6 +1,7 @@
 package com.mystaria.game.item;
 
 import net.minestom.server.item.ItemStack;
+import net.minestom.server.item.Material;
 
 /**
  * Created by Giovanni on 1/31/2023
@@ -16,6 +17,26 @@ public interface Item {
      * Returns the item {@link Type}.
      */
     Type getType();
+
+    /**
+     * Way to check whether a Minestom {@link ItemStack} is of a specific Mystaria {@link Type}.
+     */
+    static boolean isItemOfType(ItemStack itemStack, Type type) {
+        if(itemStack == null) return false;
+        if (itemStack.material() == Material.AIR) return false;
+        if (!itemStack.hasTag(ItemTags.TYPE)) return false;
+        return itemStack.getTag(ItemTags.TYPE) == type;
+    }
+
+    /**
+     * Way to check whether a Minestom {@link ItemStack} is of a specific Mystaria {@link Category}.
+     */
+    static boolean isItemOfCategory(ItemStack itemStack, Category category) {
+        if(itemStack == null) return false;
+        if (itemStack.material() == Material.AIR) return false;
+        if (!itemStack.hasTag(ItemTags.TYPE)) return false;
+        return itemStack.getTag(ItemTags.TYPE).getCategory() == category;
+    }
 
     enum Type {
 

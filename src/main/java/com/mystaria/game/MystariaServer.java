@@ -7,7 +7,6 @@ import com.mystaria.game.core.database.MystariaSQL;
 import com.mystaria.game.core.instance.CachedMystariaInstanceContainer;
 import com.mystaria.game.core.log.Logging;
 import com.mystaria.game.core.player.MystariaPlayer;
-import com.mystaria.game.item.TestListener;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minestom.server.MinecraftServer;
