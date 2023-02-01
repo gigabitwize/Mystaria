@@ -23,6 +23,16 @@ public abstract class GearModifier {
     }
 
     /**
+     * Ranged modifier.
+     */
+    public interface Ranged<A> {
+
+        A getMin();
+
+        A getMax();
+    }
+
+    /**
      * A GearModifier value, like the amount of damage a DamageModifier does.
      * <p>
      * This is not the actual implementation of a modifier, but merely just what determines the value
@@ -78,7 +88,7 @@ public abstract class GearModifier {
     /**
      * Returns a random Double between a min and a max.
      */
-    public static class RangedDoubleValue extends GearModifierValue<Double> {
+    public static class RangedDoubleValue extends GearModifierValue<Double> implements Ranged<Double> {
 
         private final Class<? extends GearModifier> modifier;
         private final double min, max;
@@ -87,6 +97,16 @@ public abstract class GearModifier {
             this.modifier = modifier;
             this.min = min;
             this.max = max;
+        }
+
+        @Override
+        public Double getMin() {
+            return min;
+        }
+
+        @Override
+        public Double getMax() {
+            return max;
         }
 
         @Override
@@ -103,7 +123,7 @@ public abstract class GearModifier {
     /**
      * Returns a random Integer between a min and a max.
      */
-    public static class RangedIntValue extends GearModifierValue<Integer> {
+    public static class RangedIntValue extends GearModifierValue<Integer> implements Ranged<Integer> {
 
         private final Class<? extends GearModifier> modifier;
         private final int min, max;
@@ -112,6 +132,16 @@ public abstract class GearModifier {
             this.modifier = modifier;
             this.min = min;
             this.max = max;
+        }
+
+        @Override
+        public Integer getMin() {
+            return min;
+        }
+
+        @Override
+        public Integer getMax() {
+            return max;
         }
 
         @Override
@@ -128,7 +158,7 @@ public abstract class GearModifier {
     /**
      * Returns a random Float between a min and a max.
      */
-    public static class RangedFloatValue extends GearModifierValue<Float> {
+    public static class RangedFloatValue extends GearModifierValue<Float> implements Ranged<Float> {
 
         private final Class<? extends GearModifier> modifier;
         private final float min, max;
@@ -137,6 +167,16 @@ public abstract class GearModifier {
             this.modifier = modifier;
             this.min = min;
             this.max = max;
+        }
+
+        @Override
+        public Float getMin() {
+            return min;
+        }
+
+        @Override
+        public Float getMax() {
+            return max;
         }
 
         @Override

@@ -1,5 +1,7 @@
 package com.mystaria.game.item;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
 
@@ -7,6 +9,23 @@ import net.minestom.server.item.Material;
  * Created by Giovanni on 1/31/2023
  */
 public interface Item {
+
+    /**
+     * Fuck you Kyori, with your shitty component library forced down our innocent throats.
+     */
+    static ItemStack fixItalicKyoriShit(ItemStack itemStack) {
+        return itemStack.withDisplayName(Item::stripItalics)
+                .withLore(lore -> lore.stream()
+                        .map(Item::stripItalics)
+                        .toList());
+    }
+
+    private static Component stripItalics(Component component) {
+        if (component == null) return null;
+        if (component.decoration(TextDecoration.ITALIC) == TextDecoration.State.NOT_SET)
+            component = component.decoration(TextDecoration.ITALIC, false);
+        return component;
+    }
 
     /**
      * Way to check whether a Minestom {@link ItemStack} is of a specific Mystaria {@link Type}.

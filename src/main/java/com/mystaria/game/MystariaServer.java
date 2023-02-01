@@ -134,6 +134,10 @@ public class MystariaServer {
         MinecraftServer.getConnectionManager().getOnlinePlayers().forEach(player -> playerDataSnapshot.add(((MystariaPlayer) player).getPlayerData()));
     }
 
+    public static MystariaGame getGame() {
+        return game;
+    }
+
     public static MystariaCore getCore() {
         return core;
     }

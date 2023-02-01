@@ -12,4 +12,8 @@ public class MystariaItemHandler {
     public MystariaItemHandler() {
         this.gearModifierRegistry = new GearModifierRegistry();
     }
+
+    public GearModifierRegistry getGearModifierRegistry() {
+        return gearModifierRegistry;
+    }
 }

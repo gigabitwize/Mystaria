@@ -1,12 +1,19 @@
 package com.mystaria.game.item.gear;
 
+import com.google.common.collect.Lists;
+import com.mystaria.game.MystariaServer;
 import com.mystaria.game.api.exception.InvalidTypeForItemException;
 import com.mystaria.game.item.Item;
 import com.mystaria.game.item.ItemTags;
+import com.mystaria.game.tier.Tier;
+import com.mystaria.game.util.PrimConvert;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.minestom.server.item.ItemHideFlag;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,6 +22,7 @@ import java.util.Set;
  */
 public class GearItem implements Item {
 
+    private final Tier tier;
     private final Type type;
     private final HashSet<GearModifier.GearModifierValue<?>> modifiers;
 
@@ -23,9 +31,10 @@ public class GearItem implements Item {
     /**
      * Used to create a new GearItem.
      */
-    public GearItem(Type type, HashSet<GearModifier.GearModifierValue<?>> modifiers) {
+    public GearItem(Tier tier, Type type, HashSet<GearModifier.GearModifierValue<?>> modifiers) {
         if (type.getCategory() != Category.GEAR)
             throw new InvalidTypeForItemException(type, getClass());
+        this.tier = tier;
         this.type = type;
         this.modifiers = modifiers;
 
@@ -36,6 +45,7 @@ public class GearItem implements Item {
      */
     public GearItem(ItemStack itemStack) {
         this.itemStack = itemStack;
+        this.tier = itemStack.getTag(ItemTags.TIER);
         this.type = itemStack.getTag(ItemTags.TYPE);
         this.modifiers = itemStack.getTag(ItemTags.MODIFIERS).convert();
     }
@@ -60,14 +70,39 @@ public class GearItem implements Item {
         return null;
     }
 
+    protected ArrayList<Component> generateModifiersLore() {
+        ArrayList<Component> lines = Lists.newArrayList();
+        for (GearModifier.GearModifierValue<?> modifier : modifiers) {
+            // Values are always cast to int for displaying round numbers
+            String name = MystariaServer.getGame().getItemHandler().getGearModifierRegistry().getNameOf(modifier.getModifierClass());
+            if (modifier instanceof GearModifier.Ranged<?>) {
+                int min = PrimConvert.intFrom(((GearModifier.Ranged<?>) modifier).getMin());
+                int max = PrimConvert.intFrom(((GearModifier.Ranged<?>) modifier).getMax());
+                // lol
+                lines.add(Component.text(name + ": ").append(Component.text(min + " - " + max)).color(NamedTextColor.RED));
+            } else {
+                int value = (int) modifier.getValue();
+                lines.add(Component.text(name + ": ").append(Component.text("+" + value)).color(NamedTextColor.RED));
+            }
+        }
+        return lines;
+    }
+
+
     @Override
     public ItemStack getItemStack() {
         if (itemStack != null) return itemStack;
         itemStack = ItemStack
-                .builder(Material.IRON_AXE)
-                .displayName(Component.text("Battle Axe"))
+                .builder(Material.STONE)
+                .displayName(Component.text("Gear Item"))
+                .lore(generateModifiersLore())
+                .set(ItemTags.TIER, tier)
                 .set(ItemTags.TYPE, type)
                 .set(ItemTags.MODIFIERS, new GearModifierContainer(modifiers))
+                .meta(builder -> builder.hideFlag(ItemHideFlag.values())
+                        .unbreakable(true)
+                        .damage(0)
+                        .build())
                 .build();
 
         return itemStack;
@@ -76,5 +111,9 @@ public class GearItem implements Item {
     @Override
     public Type getType() {
         return type;
+    }
+
+    public Tier getTier() {
+        return tier;
     }
 }
