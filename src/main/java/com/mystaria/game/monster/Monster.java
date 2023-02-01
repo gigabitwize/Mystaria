@@ -6,6 +6,7 @@ import com.mystaria.game.core.player.MystariaPlayer;
 import com.mystaria.game.tier.Tier;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.attribute.Attribute;
+import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.EntityCreature;
 import net.minestom.server.entity.EntityType;
 import net.minestom.server.entity.ai.EntityAIGroupBuilder;

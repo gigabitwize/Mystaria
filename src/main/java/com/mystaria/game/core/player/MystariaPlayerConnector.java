@@ -38,6 +38,7 @@ public class MystariaPlayerConnector implements EventListener<AsyncPlayerPreLogi
 
             @Override
             public @NotNull Result run(@NotNull PlayerLoginEvent event) {
+                System.out.println("join");
                 Optional<MystariaInstanceContainer> instanceCheck = MystariaServer.getCore().getInstanceHandler().getRandomInstance();
                 MystariaInstanceContainer instance = instanceCheck.get(); // Null = impossible
 
@@ -45,17 +46,15 @@ public class MystariaPlayerConnector implements EventListener<AsyncPlayerPreLogi
                 event.setSpawningInstance(instance);
                 player.setRespawnPoint(instance.getSpawn().getPosition());
                 player.setPermissionLevel(2);
-                player.setGameMode(GameMode.CREATIVE);
+                player.setGameMode(GameMode.SURVIVAL);
 
-                if(player.getPlayerData().newData)
-                    MystariaServer.getDatabase().insertNewPlayer(player);
+                if (player.getPlayerData().newData) MystariaServer.getDatabase().insertNewPlayer(player);
                 return Result.SUCCESS;
             }
         }).addListener(new EventListener<PlayerDisconnectEvent>() {
             @Override
             public @NotNull Result run(@NotNull PlayerDisconnectEvent event) {
-                if(MystariaServer.stopping)
-                    return Result.SUCCESS;
+                if (MystariaServer.stopping) return Result.SUCCESS;
 
                 MystariaPlayer player = (MystariaPlayer) event.getPlayer();
                 MystariaServer.getDatabase().savePlayerData(player);

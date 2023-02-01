@@ -22,7 +22,6 @@ public class MystariaPlayer extends Player {
         super(playerData.uuid, username, playerConnection);
         this.playerData = playerData;
         this.playerData.username = username;
-        setEnableRespawnScreen(false);
     }
 
     /**

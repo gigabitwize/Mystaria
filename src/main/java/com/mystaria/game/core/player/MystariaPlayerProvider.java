@@ -26,8 +26,7 @@ public class MystariaPlayerProvider implements PlayerProvider {
         MystariaPlayer mystariaPlayer = null;
         try {
             MystariaPlayerData playerData = mystariaSQL.loadPlayerData(uuid).get();
-            if (playerData != null)
-                mystariaPlayer = new MystariaPlayer(playerData, username, connection);
+            if (playerData != null) mystariaPlayer = new MystariaPlayer(playerData, username, connection);
         } catch (InterruptedException | ExecutionException e) {
             return new Player(uuid, username, connection); // Invalid
         }
