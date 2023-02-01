@@ -93,7 +93,7 @@ public class MystariaServer {
 
         MinecraftServer.getGlobalEventHandler().addListener(PlayerChatEvent.class, event -> {
             if (event.getMessage().equalsIgnoreCase("dev-test-stop")) stop();
-            if(event.getMessage().equalsIgnoreCase("test-item-dummy")) {
+            if (event.getMessage().equalsIgnoreCase("test-item-dummy")) {
                 MystariaPlayer player = (MystariaPlayer) event.getPlayer();
                 TestDummy.createAt(player.getLocation());
                 TestDummy.giveTestItem(player);

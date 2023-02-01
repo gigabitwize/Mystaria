@@ -2,7 +2,6 @@ package com.mystaria.game.core.instance;
 
 import com.mystaria.game.core.player.MystariaPlayer;
 import net.minestom.server.MinecraftServer;
-import net.minestom.server.coordinate.Point;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.Player;
 import net.minestom.server.instance.IChunkLoader;
@@ -92,10 +91,5 @@ public class MystariaInstanceContainer extends InstanceContainer {
     @Override
     public boolean placeBlock(BlockHandler.@NotNull Placement placement) {
         return super.placeBlock(placement);
-    }
-
-    @Override
-    public boolean breakBlock(@NotNull Player player, @NotNull Point blockPosition) {
-        return super.breakBlock(player, blockPosition);
     }
 }

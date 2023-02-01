@@ -9,20 +9,10 @@ import net.minestom.server.item.Material;
 public interface Item {
 
     /**
-     * Returns the actual {@link ItemStack}.
-     */
-    ItemStack getItemStack();
-
-    /**
-     * Returns the item {@link Type}.
-     */
-    Type getType();
-
-    /**
      * Way to check whether a Minestom {@link ItemStack} is of a specific Mystaria {@link Type}.
      */
     static boolean isItemOfType(ItemStack itemStack, Type type) {
-        if(itemStack == null) return false;
+        if (itemStack == null) return false;
         if (itemStack.material() == Material.AIR) return false;
         if (!itemStack.hasTag(ItemTags.TYPE)) return false;
         return itemStack.getTag(ItemTags.TYPE) == type;
@@ -32,11 +22,21 @@ public interface Item {
      * Way to check whether a Minestom {@link ItemStack} is of a specific Mystaria {@link Category}.
      */
     static boolean isItemOfCategory(ItemStack itemStack, Category category) {
-        if(itemStack == null) return false;
+        if (itemStack == null) return false;
         if (itemStack.material() == Material.AIR) return false;
         if (!itemStack.hasTag(ItemTags.TYPE)) return false;
         return itemStack.getTag(ItemTags.TYPE).getCategory() == category;
     }
+
+    /**
+     * Returns the actual {@link ItemStack}.
+     */
+    ItemStack getItemStack();
+
+    /**
+     * Returns the item {@link Type}.
+     */
+    Type getType();
 
     enum Type {
 
@@ -60,6 +60,6 @@ public interface Item {
 
         GEAR,
         CONSUMABLES,
-        MISC;
+        MISC
     }
 }

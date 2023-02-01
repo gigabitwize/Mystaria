@@ -37,6 +37,7 @@ public class MystariaInstanceHandler {
      * Generates a default {@link CachedMystariaInstanceContainer}.
      */
     public CachedMystariaInstanceContainer generateDefault() {
+        LOG.info("Generating default cached instance..");
         if (!MinecraftServer.getDimensionTypeManager().isRegistered(DimensionType.OVERWORLD))
             MinecraftServer.getDimensionTypeManager().addDimension(DimensionType.OVERWORLD);
 
@@ -45,7 +46,7 @@ public class MystariaInstanceHandler {
         CachedMystariaInstanceContainer cachedContainer = new CachedMystariaInstanceContainer(
                 this,
                 defaultInstance.getPath(),
-                new Pos(0, 5, 0),
+                new Pos(0, 42, 0),
                 DimensionType.OVERWORLD);
         cachedContainer.setGenerator(new FlatTerrainGenerator(Block.STONE));
         cachedContainer.register();
@@ -57,7 +58,8 @@ public class MystariaInstanceHandler {
      */
     public void loadAllInstances() {
         if (instancesDirectory.listFiles() == null || instancesDirectory.listFiles().length < 1) {
-            LOG.info("Could not find any Cached Instances in /instances/");
+            LOG.info("Could not find any Cached Instances in /instances/, generating default..");
+            generateDefault();
             return;
         }
 

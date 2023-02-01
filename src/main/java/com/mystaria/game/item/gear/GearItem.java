@@ -62,7 +62,7 @@ public class GearItem implements Item {
 
     @Override
     public ItemStack getItemStack() {
-        if(itemStack != null) return itemStack;
+        if (itemStack != null) return itemStack;
         itemStack = ItemStack
                 .builder(Material.IRON_AXE)
                 .displayName(Component.text("Battle Axe"))

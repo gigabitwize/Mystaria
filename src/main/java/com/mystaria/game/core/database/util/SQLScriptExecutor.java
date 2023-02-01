@@ -113,8 +113,8 @@ public class SQLScriptExecutor {
                         && trimmedLine.endsWith(getDelimiter())
                         || fullLineDelimiter
                         && trimmedLine.equals(getDelimiter())) {
-                    command.append(line.substring(0, line
-                            .lastIndexOf(getDelimiter())));
+                    command.append(line, 0, line
+                            .lastIndexOf(getDelimiter()));
                     command.append(" ");
                     this.execCommand(conn, command, lineReader);
                     command = null;
@@ -195,13 +195,13 @@ public class SQLScriptExecutor {
     @SuppressWarnings("UseOfSystemOutOrSystemErr")
     private void print(Object o) {
         if (logWriter != null) {
-           // System.out.print(o);
+            // System.out.print(o);
         }
     }
 
     private void println(Object o) {
         if (logWriter != null) {
-           // logWriter.println(o);
+            // logWriter.println(o);
         }
     }
 

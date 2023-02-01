@@ -16,11 +16,10 @@ import org.jetbrains.annotations.NotNull;
  */
 public class MystariaMOTD implements EventListener<ServerListPingEvent> {
 
-    private final ConnectorProperties properties;
-
     public static final Component version = Component.text(MystariaCore.BUILD_VERSION).color(NamedTextColor.YELLOW);
     public static final Component header = Component.text("                 MYSTARIA").color(NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD);
     public static final Component footer = Component.text("\n               A Minecraft MMORPG/Looter").color(NamedTextColor.GRAY).decorate(TextDecoration.ITALIC);
+    private final ConnectorProperties properties;
 
     public MystariaMOTD(ConnectorProperties properties) {
         this.properties = properties;

@@ -24,10 +24,10 @@ public abstract class GearModifier {
 
     /**
      * A GearModifier value, like the amount of damage a DamageModifier does.
-     *
+     * <p>
      * This is not the actual implementation of a modifier, but merely just what determines the value
      * that a modifier will use.
-     *
+     * <p>
      * Weird? This class is meant for inheritance of JSON serialization only, don't use it for anything else.
      */
     public static class GearModifierValue<A> {

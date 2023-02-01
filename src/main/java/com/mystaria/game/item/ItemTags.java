@@ -4,8 +4,6 @@ import com.mystaria.game.api.file.JsonFile;
 import com.mystaria.game.item.gear.GearModifierContainer;
 import net.minestom.server.tag.Tag;
 
-import java.util.function.Function;
-
 /**
  * Created by Giovanni on 1/31/2023
  */

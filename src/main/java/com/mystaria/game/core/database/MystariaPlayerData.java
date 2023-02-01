@@ -12,7 +12,7 @@ public class MystariaPlayerData {
 
     /**
      * This is used by MystariaSQL to determine the first save type.
-     *
+     * <p>
      * newData true = INSERT
      * newData false = UPDATE
      */

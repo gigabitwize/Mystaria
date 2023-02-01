@@ -38,7 +38,6 @@ public class MystariaPlayerConnector implements EventListener<AsyncPlayerPreLogi
 
             @Override
             public @NotNull Result run(@NotNull PlayerLoginEvent event) {
-                System.out.println("join");
                 Optional<MystariaInstanceContainer> instanceCheck = MystariaServer.getCore().getInstanceHandler().getRandomInstance();
                 MystariaInstanceContainer instance = instanceCheck.get(); // Null = impossible
 

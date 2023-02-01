@@ -11,7 +11,7 @@ import java.util.HashSet;
  */
 public class GearModifierContainer implements Convertable<HashSet<GearModifier.GearModifierValue<?>>> {
 
-    private HashSet<GearModifier.GearModifierValue<?>> container;
+    private final HashSet<GearModifier.GearModifierValue<?>> container;
 
     public GearModifierContainer(HashSet<GearModifier.GearModifierValue<?>> values) {
         this.container = values;

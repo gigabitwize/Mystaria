@@ -20,7 +20,7 @@ public interface Database {
 
     /**
      * Used for saving player data in bulk.
-     *
+     * <p>
      * Bulk saving does not execute async by default since it's mainly used on server stop.
      */
     void savePlayerDataBulk(Collection<MystariaPlayerData> dataCollection);

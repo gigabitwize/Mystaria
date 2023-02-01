@@ -19,6 +19,6 @@ public class FlatTerrainGenerator implements Generator {
 
     @Override
     public void generate(@NotNull GenerationUnit unit) {
-        unit.modifier().fillHeight(-40, 0, blockType);
+        unit.modifier().fillHeight(-40, 40, blockType);
     }
 }

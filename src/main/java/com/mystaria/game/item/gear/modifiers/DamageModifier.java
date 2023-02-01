@@ -24,7 +24,7 @@ public class DamageModifier extends GearModifier implements EventListener<Entity
         LivingEntity livingEntity = (LivingEntity) event.getTarget();
 
         GearItem weapon = new GearItem(mystariaPlayer.getItemInMainHand());
-        if(weapon.getModifierValue(this) == null) return Result.INVALID;
+        if (weapon.getModifierValue(this) == null) return Result.INVALID;
 
         float damage = (float) weapon.getModifierValue(this).getValue();
 

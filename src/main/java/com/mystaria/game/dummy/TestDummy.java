@@ -25,13 +25,8 @@ import java.util.List;
 public class TestDummy {
 
     public static void createAt(Location location) {
-        EntityCreature entityCreature = new EntityCreature(EntityType.ZOMBIE);
-        entityCreature.addAIGroup(
-                List.of(new MeleeAttackGoal(entityCreature, 1.2, 20, TimeUnit.SERVER_TICK)),
-                List.of(new ClosestEntityTarget(entityCreature, 32, entity -> entity instanceof Player))
-        );
-
-        entityCreature.setInstance(location.getInstance(), location.getPosition());
+        Monster monster = new Monster(Tier.T5, "Skeleton Man", EntityType.SKELETON);
+        monster.spawn(location);
     }
 
     public static void giveTestItem(MystariaPlayer player) {

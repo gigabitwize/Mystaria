@@ -1,7 +1,6 @@
 package com.mystaria.game;
 
 import com.mystaria.game.core.MystariaCore;
-
 import com.mystaria.game.item.MystariaItemHandler;
 
 
