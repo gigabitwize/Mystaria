@@ -56,7 +56,7 @@ public class TierMaterial {
         return sword;
     }
 
-    public class Presets {
+    public final class Presets {
 
         public static final TierMaterial TIER_ONE = new TierMaterial(
                 Material.LEATHER_HELMET,

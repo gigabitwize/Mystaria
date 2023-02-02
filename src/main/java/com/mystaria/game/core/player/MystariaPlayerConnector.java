@@ -46,6 +46,7 @@ public class MystariaPlayerConnector implements EventListener<AsyncPlayerPreLogi
                 player.setRespawnPoint(instance.getSpawn().getPosition());
                 player.setPermissionLevel(2);
                 player.setGameMode(GameMode.SURVIVAL);
+                player.recaculateStats();
 
                 if (player.getPlayerData().newData) MystariaServer.getDatabase().insertNewPlayer(player);
                 return Result.SUCCESS;

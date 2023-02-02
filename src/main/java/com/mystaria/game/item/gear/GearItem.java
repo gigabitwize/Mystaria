@@ -81,7 +81,7 @@ public class GearItem implements Item {
                 // lol
                 lines.add(Component.text(name + ": ").append(Component.text(min + " - " + max)).color(NamedTextColor.RED));
             } else {
-                int value = (int) modifier.getValue();
+                int value = PrimConvert.intFrom(modifier.getValue());
                 lines.add(Component.text(name + ": ").append(Component.text("+" + value)).color(NamedTextColor.RED));
             }
         }
