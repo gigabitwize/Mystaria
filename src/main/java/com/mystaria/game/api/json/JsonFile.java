@@ -1,4 +1,4 @@
-package com.mystaria.game.api.file;
+package com.mystaria.game.api.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

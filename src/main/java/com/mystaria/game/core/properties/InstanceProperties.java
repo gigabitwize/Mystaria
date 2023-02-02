@@ -1,6 +1,6 @@
 package com.mystaria.game.core.properties;
 
-import com.mystaria.game.api.file.serializable.SerializablePos;
+import com.mystaria.game.api.json.serializable.SerializablePos;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.world.DimensionType;
 

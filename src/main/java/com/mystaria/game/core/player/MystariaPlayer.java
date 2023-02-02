@@ -5,18 +5,23 @@ import com.mystaria.game.core.database.MystariaPlayerData;
 import com.mystaria.game.core.instance.CachedMystariaInstanceContainer;
 import com.mystaria.game.core.instance.Location;
 import com.mystaria.game.item.Item;
+import com.mystaria.game.item.gear.GearItem;
 import com.mystaria.game.item.gear.armor.BootsGearItem;
 import com.mystaria.game.item.gear.armor.ChestplateGearItem;
 import com.mystaria.game.item.gear.armor.HelmetGearItem;
 import com.mystaria.game.item.gear.armor.LeggingsGearItem;
 import com.mystaria.game.item.gear.modifiers.HPModifier;
 import net.minestom.server.attribute.Attribute;
+import net.minestom.server.entity.EquipmentSlot;
 import net.minestom.server.entity.Player;
+import net.minestom.server.item.ItemStack;
+import net.minestom.server.item.Material;
 import net.minestom.server.network.player.PlayerConnection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -34,10 +39,35 @@ public class MystariaPlayer extends Player {
         this.playerStats = Maps.newHashMap();
     }
 
+    public void calculateStatsFor(GearItem newItem, EquipmentSlot slot) {
+        // Get of new
+        float newItemHP = (float) newItem.getModifierValue(HPModifier.class).getValue();
+
+        // Get of old
+        float currentMaxHP = getMaxHealth();
+        if (!(getInventory().getItemStack(slot.armorSlot()).material() == Material.AIR)) {
+            ItemStack currentItemStack = getInventory().getItemStack(slot.armorSlot());
+            if (Item.isItemOfType(currentItemStack, Item.Type.ARMOR)) {
+                GearItem currentItem = new GearItem(currentItemStack);
+                float addedHP = (float) currentItem.getModifierValue(HPModifier.class).getValue();
+                currentMaxHP -= addedHP;
+            }
+        }
+
+        // Return old + new itemhp = new calculated HP.
+        float newHP = currentMaxHP + newItemHP;
+        getAttribute(Attribute.MAX_HEALTH).setBaseValue(newHP);
+        setAdditionalHearts(0F);
+        sendMessage(currentMaxHP + " " + "HP" + " -> " + newHP + " HP");
+    }
+
     /**
      * Recalculates the player's {@link Stat}s.
      */
+    @SuppressWarnings("unchecked")
     public void recaculateStats() {
+        HashMap<Stat, Float> cached = (HashMap<Stat, Float>) playerStats.clone();
+
         if (!isWearingAnyArmor()) {
             this.playerStats.put(Stat.HP, 20F);
             this.playerStats.put(Stat.ENERGY, 20F);
@@ -47,6 +77,16 @@ public class MystariaPlayer extends Player {
             return;
         }
         playerStats.replaceAll((s, v) -> s.updater().execute(this));
+
+        for (Map.Entry<Stat, Float> statVal : cached.entrySet()) {
+            Stat stat = statVal.getKey();
+            float val = statVal.getValue();
+            float newVal = playerStats.get(stat);
+
+            // 1000 HP -> 100 HP
+            sendMessage(val + " " + stat.name() + " -> " + newVal + " " + stat.name());
+        }
+        setAdditionalHearts(0F);
     }
 
     /**

@@ -3,6 +3,8 @@ package com.mystaria.game.item.gear;
 import com.google.common.collect.Lists;
 import com.mystaria.game.MystariaServer;
 import com.mystaria.game.api.exception.InvalidTypeForItemException;
+import com.mystaria.game.api.json.JsonFile;
+import com.mystaria.game.api.json.serializable.Adapters;
 import com.mystaria.game.item.Item;
 import com.mystaria.game.item.ItemTags;
 import com.mystaria.game.tier.Tier;
@@ -24,7 +26,7 @@ public class GearItem implements Item {
 
     private final Tier tier;
     private final Type type;
-    private final HashSet<GearModifier.GearModifierValue<?>> modifiers;
+    private HashSet<GearModifier.GearModifierValue<?>> modifiers;
 
     private ItemStack itemStack;
 
@@ -37,7 +39,6 @@ public class GearItem implements Item {
         this.tier = tier;
         this.type = type;
         this.modifiers = modifiers;
-
     }
 
     /**
@@ -47,7 +48,7 @@ public class GearItem implements Item {
         this.itemStack = itemStack;
         this.tier = itemStack.getTag(ItemTags.TIER);
         this.type = itemStack.getTag(ItemTags.TYPE);
-        this.modifiers = itemStack.getTag(ItemTags.MODIFIERS).convert();
+        this.modifiers = itemStack.getTag(ItemTags.MODIFIERS);
     }
 
 
@@ -58,14 +59,14 @@ public class GearItem implements Item {
         return modifiers;
     }
 
-
     public GearModifier.GearModifierValue<?> getModifierValue(GearModifier modifier) {
         return getModifierValue(modifier.getClass());
     }
 
     public GearModifier.GearModifierValue<?> getModifierValue(Class<? extends GearModifier> modifier) {
         for (GearModifier.GearModifierValue<?> value : modifiers) {
-            if (value.getModifierClass() == modifier) return value;
+            if (value.getModifierClass() == modifier)
+                return value;
         }
         return null;
     }
@@ -98,13 +99,12 @@ public class GearItem implements Item {
                 .lore(generateModifiersLore())
                 .set(ItemTags.TIER, tier)
                 .set(ItemTags.TYPE, type)
-                .set(ItemTags.MODIFIERS, new GearModifierContainer(modifiers))
+                .set(ItemTags.MODIFIERS, modifiers)
                 .meta(builder -> builder.hideFlag(ItemHideFlag.values())
                         .unbreakable(true)
                         .damage(0)
                         .build())
                 .build();
-
         return itemStack;
     }
 

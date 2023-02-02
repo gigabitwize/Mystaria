@@ -1,5 +1,7 @@
 package com.mystaria.game.item.gear;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -37,28 +39,26 @@ public abstract class GearModifier {
      * <p>
      * This is not the actual implementation of a modifier, but merely just what determines the value
      * that a modifier will use.
+     *
+     * Methods in this class should always be overriden.
      * <p>
      * Weird? This class is meant for inheritance of JSON serialization only, don't use it for anything else.
      */
     public static class GearModifierValue<A> {
 
-        private Class<? extends GearModifier> modifierClass;
-        private A value;
-
         /**
          * Class of the {@link GearModifier} this value is made for.
          */
         public Class<? extends GearModifier> getModifierClass() {
-            return modifierClass;
+            return null;
         }
 
         /**
          * The value of the modifier.
          */
         public A getValue() {
-            return value;
+            return null;
         }
-
     }
 
     /**
@@ -66,22 +66,30 @@ public abstract class GearModifier {
      */
     public static class Value<A> extends GearModifierValue<A> {
 
-        private final Class<? extends GearModifier> modifier;
-        private final A value;
+        private transient Class<? extends GearModifier> modifierClass;
+        @SerializedName("modifierPath")
+        private final String modifierClassName;
+        private final A typeValue;
 
         public Value(Class<? extends GearModifier> modifier, A type) {
-            this.modifier = modifier;
-            this.value = type;
+            this.modifierClassName = modifier.getName();
+            this.typeValue = type;
         }
 
-        @Override
+        @SuppressWarnings("unchecked")
         public Class<? extends GearModifier> getModifierClass() {
-            return modifier;
+            if (modifierClass != null) return modifierClass;
+            try {
+                this.modifierClass = (Class<? extends GearModifier>) Class.forName(modifierClassName);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            return modifierClass;
         }
 
         @Override
         public A getValue() {
-            return value;
+            return typeValue;
         }
     }
 
@@ -90,11 +98,13 @@ public abstract class GearModifier {
      */
     public static class RangedDoubleValue extends GearModifierValue<Double> implements Ranged<Double> {
 
-        private final Class<? extends GearModifier> modifier;
+        private transient Class<? extends GearModifier> modifierClass;
+        @SerializedName("modifierPath")
+        private final String modifierClassName;
         private final double min, max;
 
         public RangedDoubleValue(Class<? extends GearModifier> modifier, double min, double max) {
-            this.modifier = modifier;
+            this.modifierClassName = modifier.getName();
             this.min = min;
             this.max = max;
         }
@@ -109,10 +119,17 @@ public abstract class GearModifier {
             return max;
         }
 
-        @Override
+        @SuppressWarnings("unchecked")
         public Class<? extends GearModifier> getModifierClass() {
-            return modifier;
+            if (modifierClass != null) return modifierClass;
+            try {
+                this.modifierClass = (Class<? extends GearModifier>) Class.forName(modifierClassName);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            return modifierClass;
         }
+
 
         @Override
         public Double getValue() {
@@ -125,11 +142,13 @@ public abstract class GearModifier {
      */
     public static class RangedIntValue extends GearModifierValue<Integer> implements Ranged<Integer> {
 
-        private final Class<? extends GearModifier> modifier;
+        private transient Class<? extends GearModifier> modifierClass;
+        @SerializedName("modifierPath")
+        private final String modifierClassName;
         private final int min, max;
 
         public RangedIntValue(Class<? extends GearModifier> modifier, int min, int max) {
-            this.modifier = modifier;
+            this.modifierClassName = modifier.getName();
             this.min = min;
             this.max = max;
         }
@@ -144,9 +163,15 @@ public abstract class GearModifier {
             return max;
         }
 
-        @Override
+        @SuppressWarnings("unchecked")
         public Class<? extends GearModifier> getModifierClass() {
-            return modifier;
+            if (modifierClass != null) return modifierClass;
+            try {
+                this.modifierClass = (Class<? extends GearModifier>) Class.forName(modifierClassName);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            return modifierClass;
         }
 
         @Override
@@ -160,11 +185,13 @@ public abstract class GearModifier {
      */
     public static class RangedFloatValue extends GearModifierValue<Float> implements Ranged<Float> {
 
-        private final Class<? extends GearModifier> modifier;
+        private transient Class<? extends GearModifier> modifierClass;
+        @SerializedName("modifierPath")
+        private final String modifierClassName;
         private final float min, max;
 
         public RangedFloatValue(Class<? extends GearModifier> modifier, float min, float max) {
-            this.modifier = modifier;
+            this.modifierClassName = modifier.getName();
             this.min = min;
             this.max = max;
         }
@@ -179,9 +206,15 @@ public abstract class GearModifier {
             return max;
         }
 
-        @Override
+        @SuppressWarnings("unchecked")
         public Class<? extends GearModifier> getModifierClass() {
-            return modifier;
+            if (modifierClass != null) return modifierClass;
+            try {
+                this.modifierClass = (Class<? extends GearModifier>) Class.forName(modifierClassName);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            return modifierClass;
         }
 
         @Override

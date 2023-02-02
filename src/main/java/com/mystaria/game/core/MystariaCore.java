@@ -1,7 +1,7 @@
 package com.mystaria.game.core;
 
 import com.mystaria.game.MystariaServer;
-import com.mystaria.game.api.file.JsonFile;
+import com.mystaria.game.api.json.JsonFile;
 import com.mystaria.game.core.instance.MystariaInstanceHandler;
 import com.mystaria.game.core.log.Logging;
 import com.mystaria.game.core.motd.MystariaMOTD;

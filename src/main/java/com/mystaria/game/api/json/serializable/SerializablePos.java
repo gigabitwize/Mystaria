@@ -1,4 +1,4 @@
-package com.mystaria.game.api.file.serializable;
+package com.mystaria.game.api.json.serializable;
 
 import com.mystaria.game.api.Convertable;
 import net.minestom.server.coordinate.Pos;

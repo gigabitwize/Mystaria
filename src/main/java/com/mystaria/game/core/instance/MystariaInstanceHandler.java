@@ -1,7 +1,7 @@
 package com.mystaria.game.core.instance;
 
 import com.google.common.collect.Sets;
-import com.mystaria.game.api.file.JsonFile;
+import com.mystaria.game.api.json.JsonFile;
 import com.mystaria.game.core.instance.exception.InstanceMissingException;
 import com.mystaria.game.core.instance.generators.FlatTerrainGenerator;
 import com.mystaria.game.core.log.Logging;
