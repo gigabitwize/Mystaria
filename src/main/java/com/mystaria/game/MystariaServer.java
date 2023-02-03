@@ -88,9 +88,11 @@ public class MystariaServer {
                 .build());
 
         System.out.println(); // Empty line
+
         core.loadCore();
         game = new MystariaGame(core);
 
+        // TODO this is for testing
         MinecraftServer.getGlobalEventHandler().addListener(PlayerChatEvent.class, event -> {
             if (event.getMessage().equalsIgnoreCase("dev-test-stop")) stop();
             if (event.getMessage().equalsIgnoreCase("test-item-dummy")) {

@@ -27,7 +27,7 @@ public class HPModifier extends GearModifier implements EventListener<EntityEqui
             if (!Item.isItemOfType(equipment, Item.Type.ARMOR)) return Result.INVALID;
             GearItem gearItem = new GearItem(equipment);
             if (gearItem.getModifierValue(this) == null) return Result.INVALID;
-            player.calculateStatsFor(gearItem, event.getSlot());
+            player.recalculateStatsWith(gearItem, event.getSlot());
             return Result.SUCCESS;
         }
         return Result.INVALID;

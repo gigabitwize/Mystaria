@@ -1,9 +1,9 @@
 package com.mystaria.game.api;
 
 /**
- * Created by Giovanni on 2/2/2023
+ * Created by Giovanni on 2/3/2023
  */
-public interface Function<A, B> {
+public interface Function<A, B, C, R> {
 
-    A execute(B b);
+    R execute(A refA, B refB, C refC);
 }
